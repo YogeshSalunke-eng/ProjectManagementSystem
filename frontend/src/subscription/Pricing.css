@@ -1,0 +1,84 @@
+.pricing-page {
+  background: radial-gradient(circle at top, #020617, #000);
+  color: #e5e7eb;
+  padding-bottom: 50px;
+  margin-top: 0;
+  height: calc(100vh - 60px);
+  
+}
+
+.pricing-title {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 60px;
+}
+
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.pricing-card {
+  width: 300px;
+  padding: 30px;
+  background: rgba(2, 6, 23, 0.9);
+  border: 1px solid #1e293b;
+  border-radius: 18px;
+}
+
+.pricing-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.pricing-card h2 {
+  margin-bottom: 20px;
+}
+
+.pricing-card ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.pricing-card li {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.pricing-card li::before {
+  content: "✔";
+  margin-right: 8px;
+  color: #22c55e;
+}
+
+.highlight {
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.35);
+  transform: translateY(-10px);
+}
+
+.discount {
+  color: #22c55e;
+  font-size: 14px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: white;
+  color: black;
+  font-weight: 600;
+}
+
+.btn.disabled {
+  background: gray;
+  cursor: not-allowed;
+}

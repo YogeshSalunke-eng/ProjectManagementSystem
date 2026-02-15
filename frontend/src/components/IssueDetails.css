@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  background-color: #0b1120;
+  font-family: Arial, sans-serif;
+  color: #d1d5db;
+}
+
+.project-container {
+  display: flex;
+  gap: 40px;
+  padding: 40px;
+  min-height: 100vh;
+}
+
+/* LEFT SECTION */
+
+.left-section {
+  flex: 2;
+}
+
+.title {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.description h4,
+.activity h4 {
+  margin-bottom: 8px;
+  color: #9ca3af;
+}
+
+.description p {
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background: #1f2937;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #374151;
+  color: white;
+}
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: white;
+}
+
+.save-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #d1d5db;
+  cursor: pointer;
+}
+
+.comment-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: #374151;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* RIGHT SECTION */
+
+.right-section {
+  flex: 1;
+}
+
+.status-dropdown {
+  width: 100%;
+  padding: 8px;
+  background: #111827;
+  color: white;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.details-card {
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+  padding: 20px;
+  background: #0f172a;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.badge {
+  background: #1f2937;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.status {
+  background: #fbbf24;
+  color: black;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.delete-btn{
+ background: #fbbf24;
+  color: black;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 17px;  
+  font-weight: 600; 
+}
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .project-container {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,145 @@
+.project-page {
+  height: 100vh;
+  background: #020617;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.project-main {
+  flex: 3;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.project-desc {
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+
+.project-meta p {
+  margin: 6px 0;
+}
+.member-tag{
+  font-size: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.invite-btn {
+  margin-left: 10px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  color: #e5e7eb;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.status-badge {
+  display: inline-block;
+  margin-top: 10px;
+  background: #f59e0b;
+  color: black;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.members {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.member-list {
+  display: flex;
+  gap: 6px;
+}
+
+.member-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #6c5ce7;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+
+.task-board {
+  display: flex;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.task-column {
+  flex: 1;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.task-card {
+  background: #020617;
+  border: 1px solid #334155;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.column{
+  padding: 5px;
+  margin-top: 10px;
+  border:1px solid white;
+  border-radius: 10px;
+}
+
+.create-issue {
+  width: 90%;
+  background: transparent;
+  border: 1px dashed #475569;
+  color: #cbd5f5;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chat-box {
+  flex: 1;
+  border-left: 1px solid #1e293b;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chat-msg {
+  background: #020617;
+  border: 1px solid #334155;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-input {
+  padding: 10px;
+  background: #020617;
+  border: 1px solid #334155;
+  color: white;
+  border-radius: 8px;
+}
