@@ -1,4 +1,9 @@
 # Full Stack Project Management System
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Spring Boot](https://img.shields.io/badge/Backend-SpringBoot-green)
+![Maven](https://img.shields.io/badge/Build-Maven-red)
+![MySQL](https://img.shields.io/badge/Database-MySQL-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
 Live: [https://projectmanagement-ipbb.onrender.com](https://chatflow-pbbi.onrender.com/) · Repo: [https://github.com/YogeshSalunke-eng/ProjectManagementSystem]
 
