@@ -12,7 +12,7 @@
 	<artifactId>jirasoftware</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jirasoftware</name>
-	<description>authenticatioapp usiing springboot anf react.js</description>
+	<description>authenticatioapp usiing springboot and react.js</description>
 	<url/>
 	<licenses>
 		<license/>

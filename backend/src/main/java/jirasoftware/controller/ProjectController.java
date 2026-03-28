@@ -17,15 +17,10 @@ import jirasoftware.repository.ProjectRepository;
 @org.springframework.web.bind.annotation.RequestMapping("/api/projects")
 public class ProjectController {
 
-	private final ProjectRepository projectRepository;
 	@org.springframework.beans.factory.annotation.Autowired
 	private jirasoftware.service.ProjectService projectService;
 	@org.springframework.beans.factory.annotation.Autowired
 	private jirasoftware.service.UserService userService;
-
-	ProjectController(ProjectRepository projectRepository) {
-		this.projectRepository = projectRepository;
-	}
 
 	@GetMapping("/{projectId}")
 	public ResponseEntity<Project> getProjectById(@PathVariable long projectId) throws Exception {

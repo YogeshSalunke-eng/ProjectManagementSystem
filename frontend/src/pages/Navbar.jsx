@@ -45,7 +45,7 @@ const handleLogout = () => {
         <img src={profileImg} className="profile-img"
         onClick={() => setOpen(!open)} />
         <div className="profile">
-          {loading ? "Loading..." : user?.fullname || "User"}
+          {loading ? "Loading..." :  user?.fullname || "User"}
         </div>
 {open && (
           <div className="profile-popup">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Register.css';
+import './ForgetPasword.css';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Register = () => {
+const ForgetPasword = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,9 +25,9 @@ if(!isverified){
     
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/register",
+        "http://localhost:8080/auth/change-password",
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json"
           },
@@ -38,23 +39,23 @@ if(!isverified){
         }
       );
 
-        setMessage(" Registered Successfully");
+        setMessage("password changed Successfully");
         navigate("/");
       
-    } catch (err){
-    
-setError("something went wrong");
+    } catch (err) {
+      const errorr=await response.text();
+setError(errorr);
     }
   };
-  useEffect(() => {
-  if (timer <= 0) return;
-
-  const interval = setInterval(() => {
-    setTimer(prev => prev - 1);
-  }, 1000);
-
-  return () => clearInterval(interval);
-}, [timer]);
+  useEffect(()=>{
+    let interval=null;
+    if(timer>0){
+      interval=setInterval(() => {
+        setTimer(prev=>prev-1)
+      }, 1000);
+    }
+    return ()=>clearInterval(interval);
+  },[timer]);
 
 
   const handleSendOtp = async() => {
@@ -84,14 +85,14 @@ finally{
 }
   };
 
-  const handleResendOtp = async() => {
+  const handleResendSendOtp = async() => {
     if (!email) {
   setError("Please enter your email first!!!");
       return;
     }
     try{
       setLoading(true);
-const response=await fetch(`http://localhost:8080/auth/send-otp?email=${email}`,
+ const response=await fetch(`http://localhost:8080/auth/send-otp?email=${email}`,
 {
   method:"POST",
 }
@@ -109,7 +110,9 @@ catch(err){
 finally{
   setLoading(false);
 }
-  }
+  };
+
+
 const handleOtpChange=async(value)=>{
   setotp(value);
   if(value.length==6){
@@ -121,7 +124,6 @@ const handleOtpChange=async(value)=>{
         setIsVerified(true);
         setMessage("otp verified ✅");
       }
-      else {setMessage("Invalid otp");}
     }
     catch(err){
       setError("please enter valid otp");
@@ -130,17 +132,20 @@ const handleOtpChange=async(value)=>{
 }
 
 
-
+useEffect(()=>{
+  if(timer===0){
+  setShowOtpField(false);
+  }
+},[timer])
 
   return (
     <div className="container">
   <div className="auth-card">
 
-    <h2 className="title">Create Account</h2>
-    <p className="subtitle">Join Projecto 🚀</p>
+    <h2 className="title">Reset Password</h2>
+    <p className="subtitle">Secure your Account🔐</p>
 
     <form onSubmit={handleSubmit}>
-
       <div className="input-group">
         <label>Email</label>
         <div className="email-row">
@@ -213,4 +218,4 @@ const handleOtpChange=async(value)=>{
 </div>
   )
 };
-export default Register;
+export default ForgetPasword;

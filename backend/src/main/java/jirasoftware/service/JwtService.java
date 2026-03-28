@@ -28,8 +28,13 @@ public class JwtService {
 
 		Map<String, Object> claims = new HashMap<>();
 
-		return Jwts.builder().claims(claims).subject(email).issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + expirationMs)).signWith(getKey()).compact();
+		return Jwts
+				.builder()
+				.claims(claims)
+				.setSubject(email)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+				.signWith(getKey()).compact();
 	}
 
 	public String extractEmail(String token) {
@@ -45,7 +50,15 @@ public class JwtService {
 	}
 
 	private Claims extractAllClaims(String token) {
-		return Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload();
+		try {
+		    return Jwts.parser()
+		            .verifyWith(getKey())
+		            .build()
+		            .parseSignedClaims(token)
+		            .getPayload();
+		} catch (Exception e) {
+		    throw new RuntimeException("Invalid JWT Token");
+		}
 	}
 
 	private SecretKey getKey() {

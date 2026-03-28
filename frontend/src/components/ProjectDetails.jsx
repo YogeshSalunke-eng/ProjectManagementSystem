@@ -4,13 +4,14 @@ import Navbar from "../pages/Navbar";
 import TaskBoard from "./TaskBoard";
 import ChatBox from "./ChatBox";
 import "./ProjectDetails.css";
-
+import { useAuth } from "../context/AuthContext";
 const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    fetch(`http://localhost:8090/api/projects/${id}`, {
+    fetch(`http://localhost:8080/api/projects/${id}`, {
     credentials: "include", 
   })
       .then((res) => res.json())
@@ -34,8 +35,10 @@ const ProjectDetails = () => {
 
           <div className="project-meta">
             <p>
-              <strong>Project Lead :</strong> {project.owner?.fullname}
-            </p>
+              <strong>Project Lead : </strong>
+               {loading ? "Loading..." : project.owner?.fullname || "User"}
+
+             </p>
 
             <div className="members">
   <strong>Members :</strong>

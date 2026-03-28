@@ -1,5 +1,7 @@
 package jirasoftware.service;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,7 @@ public class UserService {
 
 	public User register(User user) {
 		System.out.println("EMAIL RECEIVED: " + user.getEmail());
+		
 		if (userRepository.existsByEmail(user.getEmail())) {
 			throw new RuntimeException("User already exists");
 		}
@@ -45,6 +48,14 @@ public class UserService {
 		throw new BadCredentialsException("Invalid email or password");
 
 	}
+public User resetPassword(String email,String newPassword) {
+	User user=userRepository.findByEmail(email);
+	if(user==null) {
+		throw new RuntimeException("user not found");
+}
+	user.setPassword(passwordEncoder.encode(newPassword));
+	return userRepository.save(user);}
+
 
 	public User findUserProfileByJwt(String authHeader) throws Exception {
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {

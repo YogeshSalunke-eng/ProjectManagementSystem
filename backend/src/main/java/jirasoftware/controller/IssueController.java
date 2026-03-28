@@ -52,9 +52,9 @@ public class IssueController {
 	}
 
 	@DeleteMapping("/{issueId}")
-	public ResponseEntity<Void> deleteIssue(@PathVariable long issueId, @RequestAttribute User user) throws Exception {
+	public ResponseEntity<Void> deleteIssue(@PathVariable long issueId) throws Exception {
 
-		issueService.deleteIssue(issueId, user.getId());
+		issueService.deleteIssue(issueId);
 		return ResponseEntity.noContent().build();
 	}
 

@@ -1,5 +1,7 @@
 package jirasoftware.model;
 
+import java.time.LocalDate;
+
 @lombok.Data
 @jakarta.persistence.Entity
 public class Issue {
@@ -10,11 +12,15 @@ public class Issue {
 	private String description;
 	private String status;
 	private String priority;
-	private java.time.LocalDate dueDate;
+	private LocalDate releaseDate;
+	private LocalDate dueDate;
 	private java.util.List<String> tags = new java.util.ArrayList<String>();
 	@jakarta.persistence.ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
 	@jakarta.persistence.JoinColumn(name = "assignee_id")
 	private User assignee;
+	@jakarta.persistence.ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
+	@jakarta.persistence.JoinColumn(name = "reporter_id")
+	private User reporter;
 	@jakarta.persistence.ManyToOne
 	private Project project;
 	@com.fasterxml.jackson.annotation.JsonIgnore

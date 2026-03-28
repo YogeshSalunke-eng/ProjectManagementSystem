@@ -1,11 +1,14 @@
 import React, { useState,useEffect } from "react";
 import "./IssueDetails.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const IssueDetails = () => {
   const {id}=useParams();
   const[issue,setIssue]=useState(null);
-  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState('');
+  const { user, loading } = useAuth();
 
   const navigate=useNavigate();
 
@@ -15,7 +18,7 @@ const IssueDetails = () => {
 
   const loadIssue = async () => {
     try {
-      const res = await fetch(`http://localhost:8090/api/issues/${id}`, {
+      const res = await fetch(`http://localhost:8080/api/issues/${id}`, {
         credentials: "include",
       });
 
@@ -23,7 +26,6 @@ const IssueDetails = () => {
       setIssue(data);
 
       console.log(data);
-      //console.log(issue);
     } catch (err) {
       console.error("Error loading issue:", err);
     }
@@ -32,14 +34,14 @@ const IssueDetails = () => {
   const newStatus = e.target.value;
   try {
     await fetch(
-      `http://localhost:8090/api/issues/${id}/status?status=${newStatus}`,
+      `http://localhost:8080/api/issues/${id}/status?status=${newStatus}`,
       {
         method: "PUT",
         credentials: "include",
       }
     );
 
-    loadIssue(); // reload updated issue
+    loadIssue(); 
   } catch (err) {
     console.error("Error updating status:", err);
   }
@@ -50,7 +52,7 @@ const IssueDetails = () => {
   const newPriority = e.target.value;
 
   try {
-    await fetch(`http://localhost:8090/api/issues/${id}`, {
+    await fetch(`http://localhost:8080/api/issues/${id}`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -74,7 +76,7 @@ const handleDelete = async () => {
   if (!confirmDelete) return;
 
   try {
-    const res = await fetch(`http://localhost:8090/api/issues/${id}`, {
+    const res = await fetch(`http://localhost:8080/api/issues/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -83,12 +85,52 @@ const handleDelete = async () => {
       throw new Error("Failed to delete issue");
     }
 
-    navigate(`/project/${issue.project.id}`, { replace: true });
+    navigate(`/projects/${issue.project.id}`, { replace: true });
 
   } catch (err) {
     console.error("Error deleting issue:", err);
   }
 };
+const handleAddComment=async()=>{
+  if(!comment.trim()) return;
+try{
+  const response=await fetch(`http://localhost:8080/api/issue/${issue.id}/user/&{user.id}`,{
+    method:"POST",
+    credentials:"include",
+    body: JSON.stringify({ content: comment })
+  });
+if(!response.ok){
+  console.log("failed to add commennt!!!!!!");
+}
+const newComment=await response.json();
+setComments((prev)=>[...prev,newComment]);
+setComment("");
+}
+
+catch(error){
+  console.log("error in loading comment", error)
+}
+};
+
+const useEffect(()=>{
+  const fetchComments=async()=>{
+    try{
+   const res=await fetch(`http://localhost:8080/api/comments/issue/${issue.id}`,{
+    Credentials:"include"
+  });
+  const data=res.json();
+  setComments(data);
+}
+catch(error){
+}
+}
+;if(issue?.id) fetchComments();
+},[issue.id]);
+
+
+
+
+
 
 
   if (!issue) return <div>Loading...</div>;
@@ -113,29 +155,29 @@ const handleDelete = async () => {
           </div>
 
           <div className="comment-input">
-            <div className="avatar">Y</div>
+            <div className="avatar">{issue.avatar}</div>
             <input
               type="text"
               placeholder="add a comment..."
               value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              onChange={(e) => setcomment(e.target.value)}
             />
-            <button className="save-btn">
+            <button className="save-btn" onClick={handleAddComment}>
               save
             </button>
           </div>
 
-           {/* <div className="comment-list">
+            <div className="comment-list">
             {comments.map((c) => (
               <div key={c.id} className="comment-item">
-                <div className="avatar">{c.name[0]}</div>
+                <div className="avatar">{c.avatar}</div>
                 <div>
-                  <strong>{c.name}</strong>
-                  <p>{c.text}</p>
+                  <strong>{c.fullname}</strong>
+                  <p>{c.content}</p>
                 </div>
               </div>
             ))}
-          </div>  */}
+          </div>  
         </div>
       </div>
 
@@ -170,12 +212,13 @@ const handleDelete = async () => {
 
           <div className="detail-row">
             <span>Release</span>
-            <span>-</span>
+            <span>  {issue.releasedate}
+</span>
           </div>
 
           <div className="detail-row">
             <span>Reporter</span>
-            <span className="badge">yogesh</span>
+            <span className="badge">{issue.reporter?.fullname||"reporter"}</span>
           </div>
            <div className="detail-row">
 

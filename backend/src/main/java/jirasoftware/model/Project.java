@@ -37,15 +37,14 @@ public class Project {
 	private String description;
 	private String category;
 
-	// 🔹 Recommended improvement: ElementCollection
 	@ElementCollection
 	private List<String> tags = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Chat chat;
-
-	@ManyToOne
+    @ManyToOne
+    @JoinColumn(name="owner_id")
 	private User owner;
 
 	@JsonIgnore

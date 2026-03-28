@@ -1,0 +1,24 @@
+.otp-section {
+  margin-bottom: 15px;
+}
+
+.otp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.timer {
+  font-size: 13px;
+}
+
+.error-msg {
+  color: #ff6b6b;
+  font-size: 13px;
+}
+
+.success-msg {
+  color: #00ffae;
+  font-size: 13px;
+}

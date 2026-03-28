@@ -1,0 +1,60 @@
+#######################################
+# React / Frontend
+#######################################
+
+# dependencies
+frontend/node_modules/
+
+# production build
+frontend/build/
+
+# environment files
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+# logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+#######################################
+# Spring Boot / Backend
+#######################################
+
+# compiled files
+backend/target/
+backend/*.class
+backend/*.jar
+
+# logs
+backend/*.log
+
+# application config (contains secrets)
+backend/src/main/resources/application.properties
+backend/src/main/resources/application.yml
+
+#######################################
+# IDE Files
+#######################################
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+#######################################
+# OS Files
+#######################################
+
+.DS_Store
+Thumbs.db
+
+#######################################
+# Misc
+#######################################
+
+*.swp

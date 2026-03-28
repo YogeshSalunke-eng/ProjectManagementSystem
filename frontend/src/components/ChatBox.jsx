@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState,useRef } from "react";
+import "./TaskBoard.css";
 const ChatBox = ({ projectId }) => {
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
+ 
+  const chatEndRef = useRef(null);
 
+useEffect(() => {
+  chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [messages]);
 
   const loadMessages = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8090/api/messages/project/${projectId}`,
+        `http://localhost:8080/api/messages/project/${projectId}`,
         {
           credentials: "include",
         }
@@ -21,19 +26,17 @@ const ChatBox = ({ projectId }) => {
     }
   };
 
-  // 🔹 Load messages when component mounts or projectId changes
   useEffect(() => {
     if (projectId) {
       loadMessages();
     }
   }, [projectId]);
 
-  // 🔹 Send message (POST → then GET)
   const sendMessage = async () => {
     if (!content.trim()) return;
 
     try {
-      await fetch(`http://localhost:8090/api/messages/project/${projectId}`, {
+      await fetch(`http://localhost:8080/api/messages/project/${projectId}`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   credentials: "include",
@@ -61,10 +64,18 @@ const ChatBox = ({ projectId }) => {
         ) : (
           messages.map((msg) => (
             <div key={msg.id} className="chat-msg">
-              <strong>{msg.sender?.fullname}:</strong> {msg.content}
+              <div className="upper-portion">
+              <p className="chat-username">{msg.sender?.fullname}</p>
+              <p className="chat-time">
+  {new Date(msg.createdAt).toLocaleTimeString()}
+</p>
+              </div>
+               <p className="chat-content"> {msg.content}</p> 
             </div>
           ))
         )}
+          <div ref={chatEndRef}></div>
+
       </div>
 
       <input

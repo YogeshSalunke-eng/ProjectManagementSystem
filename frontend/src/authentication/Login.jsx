@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -8,7 +9,7 @@ const Login = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
-    const response = await fetch("http://localhost:8090/auth/login", {
+    const response = await fetch("http://localhost:8080/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,7 +22,6 @@ const Login = () => {
     });
 
     if (response.ok) {
-      alert("Login Successful");
       navigate("/dashboard");
     } else {
       alert("Invalid credentials");
@@ -33,44 +33,51 @@ const Login = () => {
 };
 const navigate= useNavigate();
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        
-        <div className="input-group">
-          <label>Email</label>
-          <input 
-            type="email" 
-            placeholder="Enter your email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
-          />
-        </div>
+    <div className="container">
+  <div className="auth-card">
 
-        <div className="input-group">
-          <label>Password</label>
-          <input 
-            type="password" 
-            placeholder="Enter your password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
+    <h2 className="title">Welcome Back</h2>
+    <p className="subtitle">Login to continue 🚀</p>
 
-        <button type="submit" className="login-btn">Login</button>
+    <form onSubmit={handleSubmit}>
 
-        <div className="login-footer">
-          <p className="forgot-pass">
-            Forgot password? <a href="/forgot">click here</a>
-          </p>
-          <p className="register-link">
-            New user? <a href="/register" onClick={()=>navigate("/register")}>register</a>
-          </p>
-        </div>
-      </form>
-    </div>
+      <div className="input-group">
+        <label>Email</label>
+        <input 
+          type="email" 
+          placeholder="Enter your email" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+          required 
+        />
+      </div>
+
+      <div className="input-group">
+        <label>Password</label>
+        <input 
+          type="password" 
+          placeholder="Enter your password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          required 
+        />
+      </div>
+
+      <div className="forgot-row">
+        <Link to="/forgetpassword">Forgot Password?</Link>
+      </div>
+
+      <button type="submit" className="primary-btn">
+        Login
+      </button>
+
+      <p className="footer-text">
+        New user? <Link to="/register">Create account</Link>
+      </p>
+
+    </form>
+  </div>
+</div>
   );
 };
 

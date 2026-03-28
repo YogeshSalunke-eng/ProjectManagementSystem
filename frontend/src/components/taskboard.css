@@ -5,7 +5,6 @@
 .column{
     width: 30%;
 }
-/* modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -63,7 +62,6 @@
   font-size: 18px;
 }
 
-/* task card */
 .task-card {
   background: #020617;
   padding: 12px;
@@ -82,4 +80,33 @@
 .assign-section span {
   margin-left: 6px;
   color: white;
+}
+.chat-msg {
+  padding:0;
+  width: 80%;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+  margin-bottom: 10px;
+}
+
+.chat-content {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;  
+}
+.chat-username{
+  margin: 0;
+  padding: 0;
+}
+.upper-portion {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  opacity: 0.6;
+  padding-top: 0;
+  border-bottom: 0.3px solid #334155;
+}
+.chat-time{
+
+  margin: 0;
 }

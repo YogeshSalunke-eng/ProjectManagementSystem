@@ -36,7 +36,6 @@ public class ProjectService {
 		createdproject.setName(project.getName());
 		createdproject.setDescription(project.getDescription());
 
-		// Add selected team members properly
 		if (project.getTeam() != null) {
 
 			for (User userObj : project.getTeam()) {

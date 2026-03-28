@@ -1,9 +1,8 @@
 package jirasoftware.model;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 @jakarta.persistence.Entity
 @lombok.Data
+
 public class User {
 	@jakarta.persistence.Id
 	@jakarta.persistence.GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
@@ -15,7 +14,6 @@ public class User {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	private int projectsize;
-
 	@com.fasterxml.jackson.annotation.JsonIgnore
 	@jakarta.persistence.OneToMany(mappedBy = "sender", cascade = jakarta.persistence.CascadeType.ALL)
 	private java.util.List<Message> messages;

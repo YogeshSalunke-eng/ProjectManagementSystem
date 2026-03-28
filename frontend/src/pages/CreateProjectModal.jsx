@@ -12,7 +12,7 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
 useEffect(() => {
   const loadUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8090/auth/usersall", {
+      const res = await fetch("http://localhost:8080/auth/usersall", {
         credentials: "include"
       });
 
@@ -29,7 +29,7 @@ useEffect(() => {
 
 
   const availableTags = ["html","css","javascript","react",
-"java","spring","springboot","sql","hibernate","data jpa"  ];
+"java","spring","springboot","sql","hibernate","data jpa","python","php"  ];
 
   const toggleTag = (tag) => {
     setTags((prev) =>
@@ -50,9 +50,9 @@ const toggleMember = (user) => {
     if (!name || !description) return;
 
     try {
-      const res = await fetch("http://localhost:8090/api/projects", {
+      const res = await fetch("http://localhost:8080/api/projects", {
         method: "POST",
-        credentials: "include", // 🔥 cookie-based JWT
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -65,14 +65,17 @@ const toggleMember = (user) => {
    }),
       });
 
-      if (!res.ok) throw new Error("Project creation failed");
+      if (res.ok){
+        alert("project created successfully");
+      }
 
-      onProjectCreated(); // refresh project list
-      onClose();          // close modal
+      onProjectCreated(); 
+      onClose();          
     } catch (err) {
       console.error(err);
       alert("Failed to create project");
     }
+    
   };
 
   return (
@@ -102,7 +105,11 @@ const toggleMember = (user) => {
           <option value="backend">Backend</option>
         </select>
 
-        <select onChange={(e) => toggleTag(e.target.value)}>
+        <select onChange={(e) => {
+  if (e.target.value !== "Tags") {
+    toggleTag(e.target.value);
+  }
+}}>
           <option>Tags</option>
           {availableTags.map((t) => (
             <option key={t} value={t}>{t}</option>

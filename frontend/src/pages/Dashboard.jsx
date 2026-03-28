@@ -9,6 +9,11 @@ const Dashboard = () => {
 const [category, setCategory] = useState("all");
   const [tag, setTag] = useState("all");
   const [search, setSearch] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
+
+const handleProjectCreated = () => {
+  setRefreshKey(prev => prev + 1);
+};
   return (
     <>
       <Navbar onNewProject={() => setShowModal(true)} />
@@ -23,9 +28,12 @@ const [category, setCategory] = useState("all");
           tag={tag}
           search={search}
           onSearch={setSearch}
+          refreshKey={refreshKey}
         />        
       </div>
-            {showModal && <CreateProjectModal onClose={() => setShowModal(false)} />}
+            {showModal && <CreateProjectModal onClose={() => setShowModal(false)} 
+              onProjectCreated={handleProjectCreated}
+              />}
 
     </>
   );

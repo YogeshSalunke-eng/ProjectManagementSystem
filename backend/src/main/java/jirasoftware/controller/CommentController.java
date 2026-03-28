@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jirasoftware.model.Comments;
@@ -20,7 +21,7 @@ public class CommentController {
 
 	@PostMapping("/issue/{issueId}/user/{userId}")
 	public ResponseEntity<Comments> createComment(@PathVariable long issueId, @PathVariable long userId,
-			@RequestParam String content) throws Exception {
+			@RequestBody String content) throws Exception {
 
 		Comments comment = commentService.createComment(issueId, userId, content);
 		return ResponseEntity.ok(comment);

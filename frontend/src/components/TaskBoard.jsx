@@ -7,9 +7,9 @@ const TaskBoard = ({ projectId }) => {
   const [tasks, setTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [activeStatus, setActiveStatus] = useState("todo");
+  const[reporter,setReporter]=useState(null);
   const navigate = useNavigate();
 
-  // 🔹 Load issues from backend
   useEffect(() => {
     if (projectId) {
       loadIssues();
@@ -19,7 +19,7 @@ const TaskBoard = ({ projectId }) => {
   const loadIssues = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8090/api/issues/project/${projectId}`,
+        `http://localhost:8080/api/issues/project/${projectId}`,
         { credentials: "include" }
       );
 
@@ -31,10 +31,9 @@ const TaskBoard = ({ projectId }) => {
     }
   };
 
-  // 🔹 Create Issue (POST to backend)
   const addTask = async (task) => {
     try {
-      const res = await fetch("http://localhost:8090/api/issues", {
+      const res = await fetch("http://localhost:8080/api/issues", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -52,7 +51,7 @@ const TaskBoard = ({ projectId }) => {
       if (!res.ok) throw new Error("Failed to create issue");
 
       setShowModal(false);
-      await loadIssues(); // reload from DB
+      await loadIssues(); 
     } catch (err) {
       console.error("Error creating issue:", err);
     }
@@ -85,7 +84,6 @@ const removeTaskFromBoard = (issueId) => {
 
   return (
     <div className="taskboard">
-      {/* TODO */}
       <div className="column">
         <h4>Todo</h4>
         {renderTasks("todo")}
@@ -100,7 +98,6 @@ const removeTaskFromBoard = (issueId) => {
         </p>
       </div>
 
-      {/* IN PROGRESS */}
       <div className="column">
         <h4>In Progress</h4>
         {renderTasks("in-progress")}
@@ -115,7 +112,6 @@ const removeTaskFromBoard = (issueId) => {
         </p>
       </div>
 
-      {/* DONE */}
       <div className="column">
         <h4>Done</h4>
         {renderTasks("done")}

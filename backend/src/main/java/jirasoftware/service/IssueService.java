@@ -1,12 +1,19 @@
 package jirasoftware.service;
 
+import java.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import jirasoftware.model.Issue;
 import jirasoftware.model.Project;
 import jirasoftware.model.User;
+import jirasoftware.repository.UserRepository;
 
 @org.springframework.stereotype.Service
 public class IssueService {
-
+	@Autowired
+private UserRepository userRepository;
 	@org.springframework.beans.factory.annotation.Autowired
 	private jirasoftware.repository.IssueRepository issueRepository;
 	@org.springframework.beans.factory.annotation.Autowired
@@ -27,23 +34,23 @@ public class IssueService {
 	}
 
 	public Issue createIssue(Issue issue, User user) throws Exception {
-
-		// ✅ Get project ID correctly
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+       String email= authentication.getName();
+       User currentuser=userRepository.findByEmail(email);
 		Long projectId = issue.getProject().getId();
-
 		Project project = projectService.getProjectById(projectId);
-
 		Issue createIssue = new Issue();
 		createIssue.setTitle(issue.getTitle());
 		createIssue.setDescription(issue.getDescription());
 		createIssue.setStatus(issue.getStatus());
 		createIssue.setPriority(issue.getPriority());
-		createIssue.setDueDate(issue.getDueDate());
+        createIssue.setReleaseDate(LocalDate.now());
+		createIssue.setReporter(currentuser);
 		createIssue.setProject(project);
 		return issueRepository.save(createIssue);
 	}
 
-	public void deleteIssue(long issueId, long userId) throws Exception {
+	public void deleteIssue(long issueId) throws Exception {
 		getIssueById(issueId);
 		issueRepository.deleteById(issueId);
 	}

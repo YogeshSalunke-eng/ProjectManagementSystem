@@ -8,12 +8,13 @@ const CreateIssueModal = ({ onClose, onCreate }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [assignTo, setAssignTo] = useState("");
+  const[reporter,setReporter]=useState(" ");
 const[users,setusers]=useState([]);
 
 useEffect(() => {
   const loadUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8090/auth/usersall", {
+      const res = await fetch("http://localhost:8080/auth/usersall", {
         credentials: "include"
       });
 
@@ -48,9 +49,7 @@ useEffect(() => {
 };
 
   return (
-    // 👇 click outside closes modal
     <div className="modal-overlay" onClick={onClose}>
-      {/* 👇 stop closing when clicking inside modal */}
       <div
         className="modal"
         onClick={(e) => e.stopPropagation()}
