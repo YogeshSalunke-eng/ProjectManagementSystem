@@ -3,6 +3,7 @@ import { useState,useEffect,useRef } from "react";
 import profileImg from "../assets/profile.jpg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import projecto from "../assets/projecto-2.png";
 
 const Navbar = ({ onNewProject }) => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const handleLogout = () => {
   return (
     <nav className="navbar">
       <div className="nav-left">
-        <h3>Project Management</h3>
+<img src={projecto} alt="Projecto"  className="projecto"/>
         <button className="nav-btn" onClick={() => navigate("/dashboard")}>
           Home
         </button>

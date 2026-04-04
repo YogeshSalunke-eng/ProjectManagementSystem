@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import "./IssueDetails.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -9,9 +9,15 @@ const IssueDetails = () => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState('');
   const { user, loading } = useAuth();
+<<<<<<< HEAD
+=======
+  const chatEndRef = useRef(null);
+>>>>>>> 2d8ab25 (finally done)
 
   const navigate=useNavigate();
-
+useEffect(() => {
+  chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [comments]);
   useEffect(() => {
     loadIssue();
   }, [id]);
@@ -91,6 +97,7 @@ const handleDelete = async () => {
     console.error("Error deleting issue:", err);
   }
 };
+<<<<<<< HEAD
 const handleAddComment=async()=>{
   if(!comment.trim()) return;
 try{
@@ -127,6 +134,56 @@ catch(error){
 ;if(issue?.id) fetchComments();
 },[issue.id]);
 
+=======
+const handleAddComment = async () => {
+  if (!comment.trim()) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/comments/issue/${issue.id}/user/${user.id}`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: comment 
+      }
+    );
+
+    if (!response.ok) {
+      console.log("failed to add comment");
+      return;
+    }
+
+    const newComment = await response.json();
+    setComments((prev) => [newComment,...prev]);
+    setComment("");
+  } catch (error) {
+    console.log("error in loading comment", error);
+  }
+};
+
+useEffect(() => {
+  const fetchComments = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/comments/issue/${issue.id}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      const data = await res.json();
+      setComments(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (issue?.id) fetchComments();
+}, [issue]);
+>>>>>>> 2d8ab25 (finally done)
 
 
 
@@ -155,7 +212,11 @@ catch(error){
           </div>
 
           <div className="comment-input">
+<<<<<<< HEAD
             <div className="avatar">{issue.avatar}</div>
+=======
+            <div className="avatar">{issue.assignee?.avatar || "S"}</div>
+>>>>>>> 2d8ab25 (finally done)
             <input
               type="text"
               placeholder="add a comment..."
@@ -170,6 +231,7 @@ catch(error){
             <div className="comment-list">
             {comments.map((c) => (
               <div key={c.id} className="comment-item">
+<<<<<<< HEAD
                 <div className="avatar">{c.avatar}</div>
                 <div>
                   <strong>{c.fullname}</strong>
@@ -177,8 +239,19 @@ catch(error){
                 </div>
               </div>
             ))}
+=======
+                <div className="upper-portion">
+                  <strong className="comment-username">{c.user?.fullname || "user"}</strong>
+         <p className="comment-time">{c.createDateTime}</p>
+ </div>
+                  <p className="comment-content">{c.content}</p>
+              </div>
+            )) }
+>>>>>>> 2d8ab25 (finally done)
           </div>  
         </div>
+                  <div ref={chatEndRef}></div>
+
       </div>
 
       <div className="right-section">
@@ -212,7 +285,11 @@ catch(error){
 
           <div className="detail-row">
             <span>Release</span>
+<<<<<<< HEAD
             <span>  {issue.releasedate}
+=======
+            <span>  {issue.releaseDate}
+>>>>>>> 2d8ab25 (finally done)
 </span>
           </div>
 

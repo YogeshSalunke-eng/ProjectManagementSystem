@@ -5,7 +5,7 @@ const Filters = ({ category, tag, onCategoryChange, onTagChange }) => {
   return (
     <div className="filters">
       <div className="filter">
-        <h4>Filters</h4>
+        <h2>Filters</h2>
         <img src={filterImg} className="filter-icon" />
       </div>
 
@@ -29,7 +29,8 @@ const Filters = ({ category, tag, onCategoryChange, onTagChange }) => {
       <div className="filter-section">
         <p>Tags</p>
 
-        {["all", "react", "spring boot", "mysql", "mongodb"].map(t => (
+        {["all", "react", "spring boot", "mysql", "mongodb","html","css","javascript",
+        "java","sql","hibernate","data jpa","angular","vue.js"].map(t => (
           <label key={t}>
             <input
               type="radio"

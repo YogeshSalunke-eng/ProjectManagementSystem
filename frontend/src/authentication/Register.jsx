@@ -38,8 +38,12 @@ if(!isverified){
         }
       );
 
-        setMessage(" Registered Successfully");
-        navigate("/");
+        if (response.ok) {
+  setMessage("Registered Successfully");
+  navigate("/");
+} else {
+  setError("Registration failed");
+}
       
     } catch (err){
     
@@ -121,7 +125,7 @@ const handleOtpChange=async(value)=>{
         setIsVerified(true);
         setMessage("otp verified ✅");
       }
-      else {setMessage("Invalid otp");}
+      else {setMessage("Invalid otp ❌");}
     }
     catch(err){
       setError("please enter valid otp");

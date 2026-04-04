@@ -12,7 +12,6 @@ body {
   min-height: 100vh;
 }
 
-/* LEFT SECTION */
 
 .left-section {
   flex: 2;
@@ -26,7 +25,20 @@ body {
 .description h4,
 .activity h4 {
   margin-bottom: 8px;
-  color: #9ca3af;
+  color:white;
+  border-radius: 10px;
+  background-color:#22D3EE;
+  padding: 5px;
+  max-width: 95px;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.activity h4{
+  max-width: 70px;
+  background-color: #22D3EE;
+
 }
 
 .description p {
@@ -79,13 +91,11 @@ body {
 
 .comment-list {
   margin-top: 20px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
-.comment-item {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 15px;
-}
 
 .avatar {
   width: 36px;
@@ -98,15 +108,16 @@ body {
   font-weight: bold;
 }
 
-/* RIGHT SECTION */
 
 .right-section {
   flex: 1;
+  font-size: 20px;
 }
 
 .status-dropdown {
   width: 60%;
   padding: 8px;
+  font-size: 20px;
   background: #111827;
   color: white;
   margin-bottom: 20px;
@@ -130,6 +141,7 @@ body {
   background: #1f2937;
   padding: 4px 10px;
   border-radius: 20px;
+  font-size: 20px;
 }
 
 .status {
@@ -137,7 +149,8 @@ body {
   color: black;
   padding: 4px 10px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 17px;
+  font-weight: 600;
 }
 .delete-btn{
  background: #fbbf24;
@@ -147,10 +160,45 @@ body {
   font-size: 17px;  
   font-weight: 600; 
 }
-/* RESPONSIVE */
 
 @media (max-width: 768px) {
   .project-container {
     flex-direction: column;
   }
+}
+
+
+.comment-item {
+  padding:0;
+  width: 80%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display:  flex;
+  flex-direction: column;
+  gap: 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 400px;
+}
+
+.comment-content {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;  
+}
+.comment-username{
+  margin: 0;
+  padding: 0;
+}
+.upper-portion {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  opacity: 0.6;
+  padding-top: 0;
+}
+.comment-time{
+
+  margin: 0;
 }
