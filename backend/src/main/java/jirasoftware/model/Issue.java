@@ -2,6 +2,8 @@ package jirasoftware.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+
 @lombok.Data
 @jakarta.persistence.Entity
 public class Issue {
@@ -12,8 +14,10 @@ public class Issue {
 	private String description;
 	private String status;
 	private String priority;
+	@Column(name = "release_date")
 	private LocalDate releaseDate;
 	private LocalDate dueDate;
+	
 	private java.util.List<String> tags = new java.util.ArrayList<String>();
 	@jakarta.persistence.ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
 	@jakarta.persistence.JoinColumn(name = "assignee_id")

@@ -38,17 +38,9 @@ public class IssueController {
 	}
 
 	@PostMapping
-	public Issue createIssue(@RequestBody Issue issue) {
-
-		if (issue.getAssignee() != null && issue.getAssignee().getId() != null) {
-
-			User user = userRepository.findById(issue.getAssignee().getId())
-					.orElseThrow(() -> new RuntimeException("User not found"));
-
-			issue.setAssignee(user);
-		}
-
-		return issueRepository.save(issue);
+	public Issue createIssue(@RequestBody Issue issue)throws Exception {
+		
+		return issueService.createIssue(issue);
 	}
 
 	@DeleteMapping("/{issueId}")

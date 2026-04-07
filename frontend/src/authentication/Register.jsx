@@ -31,7 +31,7 @@ if(!isverified){
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            fullname: "yogesh salunke",
+            fullname: " salunke",
             email: email,
             password: password
           })

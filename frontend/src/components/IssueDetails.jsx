@@ -1,23 +1,25 @@
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./IssueDetails.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const IssueDetails = () => {
-  const {id}=useParams();
-  const[issue,setIssue]=useState(null);
-  const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState('');
-  const { user, loading } = useAuth();
-<<<<<<< HEAD
-=======
-  const chatEndRef = useRef(null);
->>>>>>> 2d8ab25 (finally done)
+  const { id } = useParams();
+  const { user } = useAuth();
 
-  const navigate=useNavigate();
-useEffect(() => {
-  chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-}, [comments]);
+  const [issue, setIssue] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState("");
+
+  const chatEndRef = useRef(null);
+  const navigate = useNavigate();
+
+  // 🔹 Auto scroll to latest comment
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [comments]);
+
+  // 🔹 Load issue
   useEffect(() => {
     loadIssue();
   }, [id]);
@@ -27,173 +29,132 @@ useEffect(() => {
       const res = await fetch(`http://localhost:8080/api/issues/${id}`, {
         credentials: "include",
       });
-
       const data = await res.json();
       setIssue(data);
-
-      console.log(data);
     } catch (err) {
       console.error("Error loading issue:", err);
     }
   };
-  const handleStatusChange = async (e) => {
-  const newStatus = e.target.value;
-  try {
-    await fetch(
-      `http://localhost:8080/api/issues/${id}/status?status=${newStatus}`,
-      {
-        method: "PUT",
-        credentials: "include",
+
+  // 🔹 Load comments when issue loads
+  useEffect(() => {
+    if (!issue?.id) return;
+
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8080/api/comments/issue/${issue.id}`,
+          { credentials: "include" }
+        );
+        const data = await res.json();
+        setComments(data);
+      } catch (err) {
+        console.error("Error loading comments:", err);
       }
-    );
+    };
 
-    loadIssue(); 
-  } catch (err) {
-    console.error("Error updating status:", err);
-  }
-};
+    fetchComments();
+  }, [issue?.id]);
 
+  // 🔹 Status update
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
 
-  const handlePriorityChange = async (e) => {
-  const newPriority = e.target.value;
-
-  try {
-    await fetch(`http://localhost:8080/api/issues/${id}`, {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...issue,
-        priority: newPriority,
-      }),
-    });
-
-    loadIssue();
-  } catch (err) {
-    console.error("Error updating priority:", err);
-  }
-};
-
-
-const handleDelete = async () => {
-  const confirmDelete = window.confirm("Are you sure you want to delete this issue?");
-  if (!confirmDelete) return;
-
-  try {
-    const res = await fetch(`http://localhost:8080/api/issues/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to delete issue");
+    try {
+      await fetch(
+        `http://localhost:8080/api/issues/${id}/status?status=${newStatus}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+      loadIssue();
+    } catch (err) {
+      console.error("Error updating status:", err);
     }
+  };
 
-    navigate(`/projects/${issue.project.id}`, { replace: true });
+  // 🔹 Priority update
+  const handlePriorityChange = async (e) => {
+    const newPriority = e.target.value;
 
-  } catch (err) {
-    console.error("Error deleting issue:", err);
-  }
-};
-<<<<<<< HEAD
-const handleAddComment=async()=>{
-  if(!comment.trim()) return;
-try{
-  const response=await fetch(`http://localhost:8080/api/issue/${issue.id}/user/&{user.id}`,{
-    method:"POST",
-    credentials:"include",
-    body: JSON.stringify({ content: comment })
-  });
-if(!response.ok){
-  console.log("failed to add commennt!!!!!!");
-}
-const newComment=await response.json();
-setComments((prev)=>[...prev,newComment]);
-setComment("");
-}
-
-catch(error){
-  console.log("error in loading comment", error)
-}
-};
-
-const useEffect(()=>{
-  const fetchComments=async()=>{
-    try{
-   const res=await fetch(`http://localhost:8080/api/comments/issue/${issue.id}`,{
-    Credentials:"include"
-  });
-  const data=res.json();
-  setComments(data);
-}
-catch(error){
-}
-}
-;if(issue?.id) fetchComments();
-},[issue.id]);
-
-=======
-const handleAddComment = async () => {
-  if (!comment.trim()) return;
-
-  try {
-    const response = await fetch(
-      `http://localhost:8080/api/comments/issue/${issue.id}/user/${user.id}`,
-      {
-        method: "POST",
+    try {
+      await fetch(`http://localhost:8080/api/issues/${id}`, {
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: comment 
-      }
-    );
+        body: JSON.stringify({
+          ...issue,
+          priority: newPriority,
+        }),
+      });
 
-    if (!response.ok) {
-      console.log("failed to add comment");
-      return;
+      loadIssue();
+    } catch (err) {
+      console.error("Error updating priority:", err);
     }
+  };
 
-    const newComment = await response.json();
-    setComments((prev) => [newComment,...prev]);
-    setComment("");
-  } catch (error) {
-    console.log("error in loading comment", error);
-  }
-};
+  // 🔹 Delete issue
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this issue?"
+    );
+    if (!confirmDelete) return;
 
-useEffect(() => {
-  const fetchComments = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/comments/issue/${issue.id}`,
+        `http://localhost:8080/api/issues/${id}`,
         {
+          method: "DELETE",
           credentials: "include",
         }
       );
 
-      const data = await res.json();
-      setComments(data);
-    } catch (error) {
-      console.error(error);
+      if (!res.ok) throw new Error("Delete failed");
+
+      navigate(`/projects/${issue.project.id}`, { replace: true });
+    } catch (err) {
+      console.error("Error deleting issue:", err);
     }
   };
 
-  if (issue?.id) fetchComments();
-}, [issue]);
->>>>>>> 2d8ab25 (finally done)
+  // 🔹 Add comment
+  const handleAddComment = async () => {
+    if (!comment.trim()) return;
 
+    try {
+      const res = await fetch(
+        `http://localhost:8080/api/comments/issue/${issue.id}/user/${user.id}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: comment }),
+        }
+      );
 
+      if (!res.ok) throw new Error("Failed to add comment");
 
+      const newComment = await res.json();
 
-
+      // newest on top
+      setComments((prev) => [newComment, ...prev]);
+      setComment("");
+    } catch (err) {
+      console.error("Error adding comment:", err);
+    }
+  };
 
   if (!issue) return <div>Loading...</div>;
 
   return (
     <div className="project-container">
+      {/* LEFT SECTION */}
       <div className="left-section">
         <h2 className="title">{issue.title}</h2>
 
@@ -201,7 +162,12 @@ useEffect(() => {
           <h4>Description</h4>
           <p>{issue.description}</p>
         </div>
-<button className="delete-btn" onClick={handleDelete}>delete Issue</button>
+
+        <button className="delete-btn" onClick={handleDelete}>
+          Delete Issue
+        </button>
+
+        {/* Activity */}
         <div className="activity">
           <h4>Activity</h4>
 
@@ -211,53 +177,53 @@ useEffect(() => {
             <button className="tab">History</button>
           </div>
 
+          {/* Comment input */}
           <div className="comment-input">
-<<<<<<< HEAD
-            <div className="avatar">{issue.avatar}</div>
-=======
-            <div className="avatar">{issue.assignee?.avatar || "S"}</div>
->>>>>>> 2d8ab25 (finally done)
+            <div className="avatar">
+              {user?.fullname?.charAt(0) || "U"}
+            </div>
+
             <input
               type="text"
-              placeholder="add a comment..."
+              placeholder="Add a comment..."
               value={comment}
-              onChange={(e) => setcomment(e.target.value)}
+              onChange={(e) => setComment(e.target.value)}
             />
+
             <button className="save-btn" onClick={handleAddComment}>
-              save
+              Save
             </button>
           </div>
 
-            <div className="comment-list">
+          {/* Comment list */}
+          <div className="comment-list">
             {comments.map((c) => (
               <div key={c.id} className="comment-item">
-<<<<<<< HEAD
-                <div className="avatar">{c.avatar}</div>
+                <div className="avatar">
+                  {c.user?.fullname?.charAt(0) || "U"}
+                </div>
+
                 <div>
-                  <strong>{c.fullname}</strong>
-                  <p>{c.content}</p>
+                  <div className="upper-portion">
+                    <strong>{c.user?.fullname || "User"}</strong>
+                    <p className="comment-time">{c.createDateTime}</p>
+                  </div>
+                  <p className="comment-content">{c.content}</p>
                 </div>
               </div>
             ))}
-=======
-                <div className="upper-portion">
-                  <strong className="comment-username">{c.user?.fullname || "user"}</strong>
-         <p className="comment-time">{c.createDateTime}</p>
- </div>
-                  <p className="comment-content">{c.content}</p>
-              </div>
-            )) }
->>>>>>> 2d8ab25 (finally done)
-          </div>  
+            <div ref={chatEndRef}></div>
+          </div>
         </div>
-                  <div ref={chatEndRef}></div>
-
       </div>
 
+      {/* RIGHT SECTION */}
       <div className="right-section">
-        <select className="status-dropdown"
-        value={issue.status}
-        onChange={handleStatusChange}>
+        <select
+          className="status-dropdown"
+          value={issue.status}
+          onChange={handleStatusChange}
+        >
           <option>To Do</option>
           <option>In Progress</option>
           <option>Done</option>
@@ -269,13 +235,8 @@ useEffect(() => {
           <div className="detail-row">
             <span>Assignee</span>
             <span className="badge">
-  {issue.assignee?.fullname || "Unassigned"}
-</span>
-          </div>
-
-          <div className="detail-row">
-            <span>Labels</span>
-            <span>None</span>
+              {issue.assignee?.fullname || "Unassigned"}
+            </span>
           </div>
 
           <div className="detail-row">
@@ -285,30 +246,28 @@ useEffect(() => {
 
           <div className="detail-row">
             <span>Release</span>
-<<<<<<< HEAD
-            <span>  {issue.releasedate}
-=======
-            <span>  {issue.releaseDate}
->>>>>>> 2d8ab25 (finally done)
-</span>
+            <span>{issue.releaseDate}</span>
           </div>
 
           <div className="detail-row">
             <span>Reporter</span>
-            <span className="badge">{issue.reporter?.fullname||"reporter"}</span>
+            <span className="badge">
+              {issue.reporter?.fullname || "Reporter"}
+            </span>
           </div>
-           <div className="detail-row">
 
+          <div className="detail-row">
             <span>Priority</span>
-            <select className="status-dropdown"
-        value={issue.priority}
-        onChange={handlePriorityChange}>
-          <option>High</option>
-          <option>Low</option>
-          <option>Medium</option>
-        </select>
-                </div>
-
+            <select
+              className="status-dropdown"
+              value={issue.priority}
+              onChange={handlePriorityChange}
+            >
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

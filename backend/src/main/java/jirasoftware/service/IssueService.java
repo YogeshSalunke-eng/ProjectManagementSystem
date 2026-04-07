@@ -33,10 +33,16 @@ private UserRepository userRepository;
 		return issueRepository.findByProjectId(projectId);
 	}
 
-	public Issue createIssue(Issue issue, User user) throws Exception {
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-       String email= authentication.getName();
-       User currentuser=userRepository.findByEmail(email);
+	public Issue createIssue(Issue issue) throws Exception {
+		    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    String email = auth.getName();
+		    User currentUser= userRepository.findByEmail(email);
+		    User user=null;
+		    if (issue.getAssignee() != null && issue.getAssignee().getId() != null) {
+				user = userRepository.findById(issue.getAssignee().getId())
+						.orElseThrow(() -> new RuntimeException("User not found"));
+
+			}
 		Long projectId = issue.getProject().getId();
 		Project project = projectService.getProjectById(projectId);
 		Issue createIssue = new Issue();
@@ -45,7 +51,8 @@ private UserRepository userRepository;
 		createIssue.setStatus(issue.getStatus());
 		createIssue.setPriority(issue.getPriority());
         createIssue.setReleaseDate(LocalDate.now());
-		createIssue.setReporter(currentuser);
+		createIssue.setReporter(currentUser);
+		createIssue.setAssignee(user);
 		createIssue.setProject(project);
 		return issueRepository.save(createIssue);
 	}
