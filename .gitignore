@@ -1,7 +1,8 @@
 #######################################
 # React / Frontend
 #######################################
-
+.env
+.env*
 # dependencies
 frontend/node_modules/
 
