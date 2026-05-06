@@ -1,6 +1,6 @@
-import "./dashboard.css";
+import "./Dashboard.css";
 import { useState,useEffect,useRef } from "react";
-import profileImg from "../assets/profile.jpg";
+import profileImg from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import projecto from "../assets/projecto-2.png";
@@ -31,11 +31,15 @@ const handleLogout = () => {
     <nav className="navbar">
       <div className="nav-left">
 <img src={projecto} alt="Projecto"  className="projecto"/>
-        <button className="nav-btn" onClick={() => navigate("/dashboard")}>
+        <button className="nav-btn" onClick={() => navigate("/home")}>
           Home
         </button>
+        
         <button className="nav-btn" onClick={onNewProject}>
           New Project
+        </button>
+        <button className="nav-btn" onClick={() => navigate("/dashboard")}>
+          All Projects
         </button>
         <button className="nav-btn" onClick={() => navigate("/upgrade")}>
           Upgrade

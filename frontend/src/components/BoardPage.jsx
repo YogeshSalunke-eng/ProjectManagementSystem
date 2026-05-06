@@ -5,6 +5,7 @@ import IssueDetails from "./IssueDetails";
 
 const BoardPage = () => {
   const [tasks, setTasks] = useState([]);
+  const API = import.meta.env.VITE_API_URL || "/api";
 
   const addTask = (task) => {
     setTasks([...tasks, task]);

@@ -1,5 +1,6 @@
 import { useState,useEffect } from "react";
-import "./dashboard.css";
+import "./Dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 const CreateProjectModal = ({ onClose, onProjectCreated }) => {
   const [name, setName] = useState("");
@@ -8,11 +9,12 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
   const [tags, setTags] = useState([]);
   const[team,setteam]=useState([]);
   const[users,setusers]=useState([]);
-  
+  const API = import.meta.env.VITE_API_URL || "/api";
+  const navigate=useNavigate();
 useEffect(() => {
   const loadUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8080/auth/usersall", {
+      const res = await fetch(`${API}/auth/usersall`, {
         credentials: "include"
       });
 
@@ -50,7 +52,7 @@ const toggleMember = (user) => {
     if (!name || !description) return;
 
     try {
-      const res = await fetch("http://localhost:8080/api/projects", {
+      const res = await fetch(`${API}/api/projects`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -67,6 +69,7 @@ const toggleMember = (user) => {
 
       if (res.ok){
         alert("project created successfully");
+        navigate("/dashboard");
       }
 
       onProjectCreated(); 

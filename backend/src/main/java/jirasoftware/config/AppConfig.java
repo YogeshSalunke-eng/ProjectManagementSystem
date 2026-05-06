@@ -42,7 +42,9 @@ public class AppConfig {
 	public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
 
 		org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
-		config.setAllowedOrigins(java.util.List.of("http://localhost:5173"));
+		config.setAllowedOrigins(
+    java.util.List.of(System.getenv("FRONTEND_URL"))
+);
 		config.setAllowedMethods(java.util.List.of("*"));
 		config.setAllowedHeaders(java.util.List.of("*"));
 		config.setAllowCredentials(true);

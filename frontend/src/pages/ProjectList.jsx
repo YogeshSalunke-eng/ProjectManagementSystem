@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
-import filterImg from "../assets/filter.png";
-import "./dashboard.css";
+import "./Dashboard.css";
 
 const ProjectList = ({ refreshKey,category, tag, search, onSearch }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const API = import.meta.env.VITE_API_URL || "/api";
 
 const handleDelete = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8080/api/projects/${id}`, {
+    const res = await fetch(`${API}/api/projects/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
@@ -29,7 +29,7 @@ const handleDelete = async (id) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/projects", {
+        const res = await fetch(`${API}/api/projects`, {
           credentials: "include",
         });
 
@@ -78,7 +78,6 @@ const handleDelete = async (id) => {
           value={search}
           onChange={(e) => onSearch(e.target.value)}
         />
-        <img src={filterImg} className="project-search-filter-icon" />
       </div>
 
       {loading ? (

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./IssueDetails.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import FileUpload from "./FileUpload";
 const IssueDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -13,20 +13,19 @@ const IssueDetails = () => {
 
   const chatEndRef = useRef(null);
   const navigate = useNavigate();
+   const API = import.meta.env.VITE_API_URL || "/api";
 
-  // 🔹 Auto scroll to latest comment
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [comments]);
 
-  // 🔹 Load issue
   useEffect(() => {
     loadIssue();
   }, [id]);
 
   const loadIssue = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/issues/${id}`, {
+      const res = await fetch(`${API}/api/issues/${id}`, {
         credentials: "include",
       });
       const data = await res.json();
@@ -36,14 +35,13 @@ const IssueDetails = () => {
     }
   };
 
-  // 🔹 Load comments when issue loads
   useEffect(() => {
     if (!issue?.id) return;
 
     const fetchComments = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8080/api/comments/issue/${issue.id}`,
+          `${API}/api/comments/issue/${issue.id}`,
           { credentials: "include" }
         );
         const data = await res.json();
@@ -56,13 +54,12 @@ const IssueDetails = () => {
     fetchComments();
   }, [issue?.id]);
 
-  // 🔹 Status update
   const handleStatusChange = async (e) => {
     const newStatus = e.target.value;
 
     try {
       await fetch(
-        `http://localhost:8080/api/issues/${id}/status?status=${newStatus}`,
+        `${API}/api/issues/${id}/status?status=${newStatus}`,
         {
           method: "PUT",
           credentials: "include",
@@ -74,12 +71,11 @@ const IssueDetails = () => {
     }
   };
 
-  // 🔹 Priority update
   const handlePriorityChange = async (e) => {
     const newPriority = e.target.value;
 
     try {
-      await fetch(`http://localhost:8080/api/issues/${id}`, {
+      await fetch(`${API}/api/issues/${id}`, {
         method: "PUT",
         credentials: "include",
         headers: {
@@ -97,7 +93,6 @@ const IssueDetails = () => {
     }
   };
 
-  // 🔹 Delete issue
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this issue?"
@@ -106,7 +101,7 @@ const IssueDetails = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/issues/${id}`,
+        `${API}/api/issues/${id}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -121,20 +116,19 @@ const IssueDetails = () => {
     }
   };
 
-  // 🔹 Add comment
   const handleAddComment = async () => {
     if (!comment.trim()) return;
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/comments/issue/${issue.id}/user/${user.id}`,
+        `${API}/api/comments/issue/${issue.id}/user/${user.id}`,
         {
           method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ content: comment }),
+          body:comment,
         }
       );
 
@@ -142,7 +136,6 @@ const IssueDetails = () => {
 
       const newComment = await res.json();
 
-      // newest on top
       setComments((prev) => [newComment, ...prev]);
       setComment("");
     } catch (err) {
@@ -152,61 +145,67 @@ const IssueDetails = () => {
 
   if (!issue) return <div>Loading...</div>;
 
+
+
   return (
     <div className="project-container">
-      {/* LEFT SECTION */}
       <div className="left-section">
+        <div className="wrapping-files">
+        <div className="title-line">
         <h2 className="title">{issue.title}</h2>
 
-        <div className="description">
-          <h4>Description</h4>
-          <p>{issue.description}</p>
-        </div>
+  <div className="description">
+    <h4>Description</h4> 
+  <p>{issue.description}</p>  
+</div>
+  </div>
+  <FileUpload/>
+</div>
 
         <button className="delete-btn" onClick={handleDelete}>
           Delete Issue
         </button>
 
-        {/* Activity */}
         <div className="activity">
-          <h4>Activity</h4>
+        {/* <h4>Activity</h4>
 
           <div className="tabs">
             <button className="tab">All</button>
             <button className="tab active">Comments</button>
             <button className="tab">History</button>
-          </div>
+          </div> */}
 
-          {/* Comment input */}
-          <div className="comment-input">
-            <div className="avatar">
-              {user?.fullname?.charAt(0) || "U"}
-            </div>
+     <button className="tab active">Comments</button>
 
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
+        <div className="comment-input">
+  <div className="avatar">
+    {user?.fullname?.charAt(0) || "U"}
+  </div>
+  <form
+    onSubmit={(e) => { e.preventDefault(); handleAddComment(); }}
+    style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}
+  >
+    <input
+      type="text"
+      placeholder="Add a comment..."
+      value={comment}
+      onChange={(e) => setComment(e.target.value)}
+    />
+    <button type="submit" className="save-btn">Send</button>
+  </form>
+</div>
 
-            <button className="save-btn" onClick={handleAddComment}>
-              Save
-            </button>
-          </div>
-
-          {/* Comment list */}
           <div className="comment-list">
             {comments.map((c) => (
               <div key={c.id} className="comment-item">
-                <div className="avatar">
-                  {c.user?.fullname?.charAt(0) || "U"}
-                </div>
+                
 
                 <div>
                   <div className="upper-portion">
                     <strong>{c.user?.fullname || "User"}</strong>
-                    <p className="comment-time">{c.createDateTime}</p>
+<p className="comment-time">
+  {new Date(c.createDateTime).toLocaleString()}
+</p>
                   </div>
                   <p className="comment-content">{c.content}</p>
                 </div>
@@ -217,7 +216,6 @@ const IssueDetails = () => {
         </div>
       </div>
 
-      {/* RIGHT SECTION */}
       <div className="right-section">
         <select
           className="status-dropdown"

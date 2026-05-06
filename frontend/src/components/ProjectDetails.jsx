@@ -9,9 +9,10 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const { user, loading } = useAuth();
+  const API = import.meta.env.VITE_API_URL || "/api";
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/projects/${id}`, {
+    fetch(`${API}/api/projects/${id}`, {
     credentials: "include", 
   })
       .then((res) => res.json())

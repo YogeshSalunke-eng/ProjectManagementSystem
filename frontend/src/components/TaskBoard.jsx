@@ -9,6 +9,7 @@ const TaskBoard = ({ projectId }) => {
   const [activeStatus, setActiveStatus] = useState("todo");
   const[reporter,setReporter]=useState(null);
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL || "/api";
 
   useEffect(() => {
     if (projectId) {
@@ -19,7 +20,7 @@ const TaskBoard = ({ projectId }) => {
   const loadIssues = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/issues/project/${projectId}`,
+        `${API}/api/issues/project/${projectId}`,
         { credentials: "include" }
       );
 
@@ -33,7 +34,7 @@ const TaskBoard = ({ projectId }) => {
 
   const addTask = async (task) => {
     try {
-      const res = await fetch("http://localhost:8080/api/issues", {
+      const res = await fetch(`${API}/api/issues`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

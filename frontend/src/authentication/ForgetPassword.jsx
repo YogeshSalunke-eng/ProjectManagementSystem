@@ -4,7 +4,7 @@ import './ForgetPasword.css';
 import { useNavigate, Link } from 'react-router-dom';
 
 const ForgetPasword = () => {
-
+  const API = import.meta.env.VITE_API_URL || "/api";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
  const[otp,setotp]=useState('');
@@ -25,7 +25,7 @@ if(!isverified){
     
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/change-password",
+        `${API}/auth/change-password`,
         {
           method: "PUT",
           headers: {
@@ -65,7 +65,7 @@ setError(errorr);
     }
     try{
       setLoading(true);
-const response=await fetch(`http://localhost:8080/auth/send-otp?email=${email}`,
+const response=await fetch(`${API}/auth/send-otp?email=${email}`,
 {
   method:"POST",
 }
@@ -92,7 +92,7 @@ finally{
     }
     try{
       setLoading(true);
- const response=await fetch(`http://localhost:8080/auth/send-otp?email=${email}`,
+ const response=await fetch(`${API}/auth/send-otp?email=${email}`,
 {
   method:"POST",
 }
@@ -117,7 +117,7 @@ const handleOtpChange=async(value)=>{
   setotp(value);
   if(value.length==6){
     try{
-      const response=await fetch(`http://localhost:8080/auth/otp-verify?email=${email}&otp=${value}`,
+      const response=await fetch(`${API}/auth/otp-verify?email=${email}&otp=${value}`,
       {method:"POST"}
       );
       if(response.ok){

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./dashboard.css";
+import "./Dashboard.css";
 import Filters from "./Filters";
 import Navbar from "./Navbar";
 import ProjectList from "./ProjectList";
@@ -10,6 +10,7 @@ const [category, setCategory] = useState("all");
   const [tag, setTag] = useState("all");
   const [search, setSearch] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
+  const API = import.meta.env.VITE_API_URL || "/api";
 
 const handleProjectCreated = () => {
   setRefreshKey(prev => prev + 1);

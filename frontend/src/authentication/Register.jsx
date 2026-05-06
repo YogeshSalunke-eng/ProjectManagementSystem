@@ -3,7 +3,7 @@ import './Register.css';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
-
+const API = import.meta.env.VITE_API_URL || "/api";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
  const[otp,setotp]=useState('');
@@ -13,7 +13,7 @@ const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading,setLoading]=useState(false);
   const [isverified,setIsVerified]=useState(false);
-
+ const[name,setName]=useState('');
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +24,14 @@ if(!isverified){
     
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/register",
+        `${API}/auth/register`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            fullname: " salunke",
+            fullname:name,
             email: email,
             password: password
           })
@@ -68,7 +68,7 @@ setError("something went wrong");
     }
     try{
       setLoading(true);
-const response=await fetch(`http://localhost:8080/auth/send-otp?email=${email}`,
+const response=await fetch(`${API}/auth/send-otp?email=${email}`,
 {
   method:"POST",
 }
@@ -95,7 +95,7 @@ finally{
     }
     try{
       setLoading(true);
-const response=await fetch(`http://localhost:8080/auth/send-otp?email=${email}`,
+const response=await fetch(`${API}/auth/send-otp?email=${email}`,
 {
   method:"POST",
 }
@@ -118,7 +118,7 @@ const handleOtpChange=async(value)=>{
   setotp(value);
   if(value.length==6){
     try{
-      const response=await fetch(`http://localhost:8080/auth/otp-verify?email=${email}&otp=${value}`,
+      const response=await fetch(`${API}/auth/otp-verify?email=${email}&otp=${value}`,
       {method:"POST"}
       );
       if(response.ok){
@@ -200,6 +200,16 @@ const handleOtpChange=async(value)=>{
           placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+<div className="input-group">
+        <label>Name</label>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
         />
       </div>

@@ -1,12 +1,10 @@
-import "./dashboard.css";
-import filterImg from "../assets/filter.png";
+import "./Dashboard.css";
 
 const Filters = ({ category, tag, onCategoryChange, onTagChange }) => {
   return (
     <div className="filters">
       <div className="filter">
         <h2>Filters</h2>
-        <img src={filterImg} className="filter-icon" />
       </div>
 
       <div className="filter-section">

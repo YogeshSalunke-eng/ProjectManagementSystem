@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const[projects,setProjects]=useState('');
+  const API = import.meta.env.VITE_API_URL || "/api";
+
+const fetchProjects = async () => {
+  const res = await fetch(`${API}/api/projects`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch projects");
+
+  return await res.json();
+};
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
-    const response = await fetch("http://localhost:8080/auth/login", {
+    const response = await fetch(`${API}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,10 +33,17 @@ const Login = () => {
       })
     });
 
-    if (response.ok) {
-      navigate("/dashboard");
-    } else {
+    if (!response.ok) {
       alert("Invalid credentials");
+      return;
+    }
+
+    const projectsData = await fetchProjects();
+
+    if (projectsData.length === 0) {
+      navigate("/home");
+    } else {
+      navigate("/dashboard");
     }
 
   } catch (error) {

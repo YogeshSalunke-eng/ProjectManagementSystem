@@ -10,11 +10,12 @@ const CreateIssueModal = ({ onClose, onCreate }) => {
   const [assignTo, setAssignTo] = useState("");
   const[reporter,setReporter]=useState(" ");
 const[users,setusers]=useState([]);
+const API = import.meta.env.VITE_API_URL || "/api";
 
 useEffect(() => {
   const loadUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8080/auth/usersall", {
+      const res = await fetch(`${API}/auth/usersall`, {
         credentials: "include"
       });
 

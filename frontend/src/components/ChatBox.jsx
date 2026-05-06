@@ -1,10 +1,11 @@
 import { useEffect, useState,useRef } from "react";
-import "./TaskBoard.css";
+import "./taskboard.css";
 const ChatBox = ({ projectId }) => {
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
  
   const chatEndRef = useRef(null);
+  const API = import.meta.env.VITE_API_URL || "/api";
 
 useEffect(() => {
   chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -13,7 +14,7 @@ useEffect(() => {
   const loadMessages = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/messages/project/${projectId}`,
+        `${API}/api/messages/project/${projectId}`,
         {
           credentials: "include",
         }
@@ -36,7 +37,7 @@ useEffect(() => {
     if (!content.trim()) return;
 
     try {
-      await fetch(`http://localhost:8080/api/messages/project/${projectId}`, {
+      await fetch(`${API}/api/messages/project/${projectId}`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   credentials: "include",

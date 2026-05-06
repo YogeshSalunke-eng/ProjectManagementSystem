@@ -5,11 +5,11 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+const API = import.meta.env.VITE_API_URL || "/api";
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/users/profile", {
+        const res = await fetch(`${API}/api/users/profile`, {
           method: "GET",
           credentials: "include", 
         });
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchProfile();
-  }, []);
+  }, [API]);
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
